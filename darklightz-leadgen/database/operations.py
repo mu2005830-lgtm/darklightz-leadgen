@@ -57,6 +57,33 @@ def get_searches(limit: int = 100) -> list[dict]:
     return [_row_to_dict(r) for r in rows]
 
 
+def get_searches_with_counts(limit: int = 500) -> list[dict]:
+    """Return all search sessions with actual lead count per session."""
+    conn = get_connection()
+    rows = conn.execute(
+        """
+        SELECT s.*, COUNT(l.id) AS lead_count
+        FROM searches s
+        LEFT JOIN leads l ON l.search_id = s.id
+        GROUP BY s.id
+        ORDER BY s.created_at DESC
+        LIMIT ?
+        """,
+        (limit,),
+    ).fetchall()
+    conn.close()
+    return [_row_to_dict(r) for r in rows]
+
+
+def get_search_by_id(search_id: int) -> dict | None:
+    conn = get_connection()
+    row = conn.execute(
+        "SELECT * FROM searches WHERE id=?", (search_id,)
+    ).fetchone()
+    conn.close()
+    return _row_to_dict(row) if row else None
+
+
 # ===========================================================================
 # LEADS
 # ===========================================================================

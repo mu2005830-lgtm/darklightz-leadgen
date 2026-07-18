@@ -1,35 +1,35 @@
 """
-Lead Table widget — Darklightz Lead Generator v2.0.
+Lead Management widget — Darklightz Lead Generator v2.0
 
-v2.0 redesign
--------------
-* All new fields shown: category, mobile, email, maps_link, latitude,
-  longitude, opening_hours.
-* Sortable columns (click header).
-* Live search bar filters across name, phone, email, address, category.
-* Status filter dropdown.
-* Inline Notes editing (double-click Notes cell).
-* Inline Status editing (right-click → Set Status).
-* "Open in Google Maps" action button from right-click menu.
-* "Copy Google Maps Link" action button from right-click menu.
-* "Add to Collection" action for Lead Collections.
+Redesigned as a two-level CRM view:
+
+  Level 1 — Collections list
+      Each search session is shown as a card:
+        🔍 Keyword  in  City
+        Date · Time · Status · Lead count
+        [Open Collection] button
+
+  Level 2 — Leads table for a selected collection
+        Back button → returns to level 1
+        All 15 columns, sortable, searchable, filterable
+        Right-click for actions (status, notes, maps, WhatsApp, delete)
 """
 
 from __future__ import annotations
 
 import webbrowser
-from typing import Any
+from datetime import datetime
 
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel,
     QPushButton, QTableWidget, QTableWidgetItem,
     QHeaderView, QMenu, QMessageBox,
-    QDialog, QTextEdit, QDialogButtonBox, QComboBox,
+    QDialog, QTextEdit, QDialogButtonBox,
     QLineEdit, QSizePolicy, QAbstractItemView,
+    QScrollArea, QFrame, QStackedWidget,
 )
-from PyQt6.QtGui import QAction
-from PyQt6.QtCore import Qt, pyqtSignal, QTimer
-from PyQt6.QtGui import QColor, QFont, QBrush
+from PyQt6.QtCore import Qt, QTimer
+from PyQt6.QtGui import QAction, QColor, QFont, QBrush
 
 from database import operations as db
 from frontend.styles import STATUS_COLOURS, LEAD_TYPE_COLOURS
@@ -37,30 +37,24 @@ from utilities.logger import logger
 
 
 # ---------------------------------------------------------------------------
-# Column spec: (header label, dict key, width, editable)
+# Lead table column spec
 # ---------------------------------------------------------------------------
-COLUMNS: list[tuple[str, str, int, bool]] = [
-    ("Business Name",  "name",          200, False),
-    ("Category",       "category",      130, False),
-    ("Phone",          "phone",         130, False),
-    ("Mobile",         "mobile",        130, False),
-    ("WhatsApp",       "whatsapp",      210, False),
-    ("Email",          "email",         190, False),
-    ("Instagram",      "instagram",     190, False),
-    ("Facebook",       "facebook",      190, False),
-    ("Website",        "website",       190, False),
-    ("Address",        "address",       230, False),
-    ("Google Maps",    "maps_link",     210, False),
-    ("Latitude",       "latitude",       90, False),
-    ("Longitude",      "longitude",      90, False),
-    ("Rating",         "rating",         60, False),
-    ("Reviews",        "reviews",        70, False),
-    ("Opening Hours",  "opening_hours", 210, False),
-    ("Lead Type",      "lead_type",     130, False),
-    ("Status",         "status",        110, False),
-    ("City",           "city",          100, False),
-    ("Notes",          "notes",         200, True),
-    ("Date Added",     "created_at",    140, False),
+COLUMNS: list[tuple[str, str, int]] = [
+    ("Business Name",  "name",          200),
+    ("Category",       "category",      130),
+    ("Phone",          "phone",         130),
+    ("Mobile",         "mobile",        130),
+    ("WhatsApp",       "whatsapp",      210),
+    ("Email",          "email",         190),
+    ("Instagram",      "instagram",     190),
+    ("Facebook",       "facebook",      190),
+    ("Website",        "website",       190),
+    ("Address",        "address",       230),
+    ("Google Maps",    "maps_link",     210),
+    ("Rating",         "rating",         60),
+    ("Reviews",        "reviews",        70),
+    ("Status",         "status",        110),
+    ("Notes",          "notes",         200),
 ]
 
 STATUS_OPTIONS = [
@@ -72,47 +66,187 @@ STATUS_OPTIONS = [
 # Notes editor dialog
 # ---------------------------------------------------------------------------
 
-class NotesDialog(QDialog):
-    def __init__(self, lead_id: int, current_notes: str, parent=None):
+class _NotesDialog(QDialog):
+    def __init__(self, current_notes: str, parent=None):
         super().__init__(parent)
-        self.lead_id = lead_id
         self.setWindowTitle("Edit Notes")
-        self.setMinimumSize(500, 300)
-
+        self.setMinimumSize(500, 280)
         layout = QVBoxLayout(self)
         layout.addWidget(QLabel("Notes:"))
-
         self._editor = QTextEdit()
         self._editor.setPlainText(current_notes)
         layout.addWidget(self._editor)
-
-        buttons = QDialogButtonBox(
+        btns = QDialogButtonBox(
             QDialogButtonBox.StandardButton.Save |
             QDialogButtonBox.StandardButton.Cancel
         )
-        buttons.accepted.connect(self.accept)
-        buttons.rejected.connect(self.reject)
-        layout.addWidget(buttons)
+        btns.accepted.connect(self.accept)
+        btns.rejected.connect(self.reject)
+        layout.addWidget(btns)
 
     def get_notes(self) -> str:
         return self._editor.toPlainText().strip()
 
 
 # ---------------------------------------------------------------------------
-# Main widget
+# Single collection card
 # ---------------------------------------------------------------------------
 
-class LeadsWidget(QWidget):
-    """Redesigned lead table with all v2.0 fields."""
-
-    def __init__(self, parent=None):
+class _CollectionCard(QFrame):
+    def __init__(self, session: dict, on_open, parent=None):
         super().__init__(parent)
+        self.setObjectName("StatCard")
+        self._session = session
+
+        row = QHBoxLayout(self)
+        row.setContentsMargins(20, 14, 20, 14)
+        row.setSpacing(20)
+
+        # Left: icon + info
+        info = QVBoxLayout()
+        info.setSpacing(4)
+
+        keyword  = session.get("keyword", "—")
+        city     = session.get("city", "—")
+        status   = session.get("status", "")
+        count    = session.get("lead_count", 0)
+        raw_date = session.get("created_at", "")
+
+        # Parse and format date/time
+        try:
+            dt = datetime.strptime(raw_date[:19], "%Y-%m-%d %H:%M:%S")
+            date_str = dt.strftime("%d %b %Y")
+            time_str = dt.strftime("%I:%M %p")
+        except Exception:
+            date_str = raw_date[:10]
+            time_str = ""
+
+        title_lbl = QLabel(f"🔍  {keyword}   —   {city}")
+        title_lbl.setStyleSheet(
+            "color: #cdd6f4; font-size: 14px; font-weight: bold;"
+        )
+
+        status_colour = "#a6e3a1" if status == "complete" else "#fab387"
+        status_icon   = "✅" if status == "complete" else "⏸"
+
+        meta_lbl = QLabel(
+            f"{date_str}  ·  {time_str}  ·  "
+            f"<span style='color:{status_colour}'>{status_icon} {status.capitalize()}</span>  ·  "
+            f"<b style='color:#cba6f7'>{count} lead{'s' if count != 1 else ''}</b>"
+        )
+        meta_lbl.setTextFormat(Qt.TextFormat.RichText)
+        meta_lbl.setStyleSheet("color: #a6adc8; font-size: 12px;")
+
+        info.addWidget(title_lbl)
+        info.addWidget(meta_lbl)
+
+        row.addLayout(info, 1)
+
+        # Right: open button
+        open_btn = QPushButton("Open Collection  →")
+        open_btn.setFixedWidth(160)
+        open_btn.clicked.connect(lambda: on_open(session))
+        row.addWidget(open_btn)
+
+
+# ---------------------------------------------------------------------------
+# Collections list page (Level 1)
+# ---------------------------------------------------------------------------
+
+class _CollectionsPage(QWidget):
+    def __init__(self, on_open_session, parent=None):
+        super().__init__(parent)
+        self._on_open = on_open_session
+        self._build_ui()
+
+    def _build_ui(self) -> None:
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(24, 20, 24, 20)
+        layout.setSpacing(8)
+
+        title = QLabel("Lead Collections")
+        title.setObjectName("PageTitle")
+        subtitle = QLabel(
+            "Each search session is a Lead Collection. "
+            "Click 'Open Collection' to view, manage, and export its leads."
+        )
+        subtitle.setObjectName("PageSubtitle")
+        subtitle.setWordWrap(True)
+        layout.addWidget(title)
+        layout.addWidget(subtitle)
+
+        # Toolbar
+        toolbar = QHBoxLayout()
+        self._count_lbl = QLabel("")
+        self._count_lbl.setStyleSheet("color: #6c7086; font-size: 12px;")
+        refresh_btn = QPushButton("↻ Refresh")
+        refresh_btn.setObjectName("SecondaryButton")
+        refresh_btn.setFixedWidth(90)
+        refresh_btn.clicked.connect(self.refresh)
+        toolbar.addWidget(self._count_lbl)
+        toolbar.addStretch()
+        toolbar.addWidget(refresh_btn)
+        layout.addLayout(toolbar)
+
+        # Scroll area for cards
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setFrameShape(QFrame.Shape.NoFrame)
+        self._content = QWidget()
+        self._cards_layout = QVBoxLayout(self._content)
+        self._cards_layout.setContentsMargins(0, 0, 0, 0)
+        self._cards_layout.setSpacing(10)
+        self._cards_layout.addStretch()
+        scroll.setWidget(self._content)
+        layout.addWidget(scroll)
+
+    def refresh(self) -> None:
+        sessions = db.get_searches_with_counts()
+
+        # Remove all existing cards (keep the stretch at the end)
+        while self._cards_layout.count() > 1:
+            item = self._cards_layout.takeAt(0)
+            if item.widget():
+                item.widget().deleteLater()
+
+        if not sessions:
+            empty = QLabel(
+                "No search sessions yet.\n\n"
+                "Go to Lead Search and run your first search."
+            )
+            empty.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            empty.setStyleSheet("color: #45475a; font-size: 14px; padding: 40px;")
+            self._cards_layout.insertWidget(0, empty)
+            self._count_lbl.setText("0 collections")
+            return
+
+        for session in sessions:
+            card = _CollectionCard(session, self._on_open)
+            self._cards_layout.insertWidget(
+                self._cards_layout.count() - 1, card
+            )
+
+        total = len(sessions)
+        self._count_lbl.setText(
+            f"{total} collection{'s' if total != 1 else ''}"
+        )
+
+
+# ---------------------------------------------------------------------------
+# Leads table page (Level 2)
+# ---------------------------------------------------------------------------
+
+class _LeadsTablePage(QWidget):
+    def __init__(self, on_back, parent=None):
+        super().__init__(parent)
+        self._on_back = on_back
+        self._session: dict = {}
         self._all_leads: list[dict] = []
         self._filtered_leads: list[dict] = []
-        self._sort_col: int = 20   # default sort: Date Added
-        self._sort_asc: bool = False
+        self._sort_col = 0
+        self._sort_asc = True
 
-        # Must be created BEFORE _build_ui() because _build_ui connects to it
+        # Debounce search
         self._search_timer = QTimer()
         self._search_timer.setSingleShot(True)
         self._search_timer.setInterval(300)
@@ -120,34 +254,40 @@ class LeadsWidget(QWidget):
 
         self._build_ui()
 
-    # ------------------------------------------------------------------
-    # UI construction
-    # ------------------------------------------------------------------
-
     def _build_ui(self) -> None:
         layout = QVBoxLayout(self)
         layout.setContentsMargins(24, 20, 24, 20)
         layout.setSpacing(8)
 
-        # Page header
-        title = QLabel("Lead Table")
-        title.setObjectName("PageTitle")
-        subtitle = QLabel(
-            "All collected leads. Click a column header to sort. "
-            "Right-click a row for actions. Double-click Notes to edit."
-        )
-        subtitle.setObjectName("PageSubtitle")
-        subtitle.setWordWrap(True)
-        layout.addWidget(title)
-        layout.addWidget(subtitle)
+        # Header row: back button + title
+        header_row = QHBoxLayout()
+        back_btn = QPushButton("← Back to Collections")
+        back_btn.setObjectName("SecondaryButton")
+        back_btn.setFixedWidth(200)
+        back_btn.clicked.connect(self._on_back)
+        header_row.addWidget(back_btn)
+        header_row.addStretch()
 
-        # ---- Toolbar -----------------------------------------------------
+        self._export_hint = QLabel("")
+        self._export_hint.setStyleSheet("color: #6c7086; font-size: 11px;")
+        header_row.addWidget(self._export_hint)
+        layout.addLayout(header_row)
+
+        self._title = QLabel("")
+        self._title.setObjectName("PageTitle")
+        self._subtitle = QLabel("")
+        self._subtitle.setObjectName("PageSubtitle")
+        self._subtitle.setWordWrap(True)
+        layout.addWidget(self._title)
+        layout.addWidget(self._subtitle)
+
+        # Toolbar
         toolbar = QHBoxLayout()
         toolbar.setSpacing(10)
 
         self._search_input = QLineEdit()
         self._search_input.setPlaceholderText(
-            "Search name, phone, email, address, category …"
+            "Search name, phone, email, address …"
         )
         self._search_input.setClearButtonEnabled(True)
         self._search_input.textChanged.connect(self._search_timer.start)
@@ -155,39 +295,14 @@ class LeadsWidget(QWidget):
             QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed
         )
 
-        self._status_filter = QComboBox()
-        self._status_filter.addItems(
-            ["All Statuses", "New", "Contacted", "Follow-up",
-             "Interested", "Closed", "Not Interested"]
-        )
-        self._status_filter.setFixedWidth(160)
-        self._status_filter.currentTextChanged.connect(self._apply_filters)
-
-        self._type_filter = QComboBox()
-        self._type_filter.addItems(
-            ["All Types", "No Website", "Social Only", "No Online Presence",
-             "Facebook Only", "Instagram Only", "WhatsApp Only"]
-        )
-        self._type_filter.setFixedWidth(160)
-        self._type_filter.currentTextChanged.connect(self._apply_filters)
-
-        self._count_label = QLabel("0 leads")
-        self._count_label.setStyleSheet("color: #6c7086; font-size: 12px;")
-
-        refresh_btn = QPushButton("↻ Refresh")
-        refresh_btn.setObjectName("SecondaryButton")
-        refresh_btn.setFixedWidth(90)
-        refresh_btn.clicked.connect(self.refresh)
+        self._count_lbl = QLabel("")
+        self._count_lbl.setStyleSheet("color: #6c7086; font-size: 12px;")
 
         toolbar.addWidget(self._search_input)
-        toolbar.addWidget(self._status_filter)
-        toolbar.addWidget(self._type_filter)
-        toolbar.addWidget(self._count_label)
-        toolbar.addWidget(refresh_btn)
-
+        toolbar.addWidget(self._count_lbl)
         layout.addLayout(toolbar)
 
-        # ---- Table -------------------------------------------------------
+        # Table
         self._table = QTableWidget()
         self._table.setColumnCount(len(COLUMNS))
         self._table.setHorizontalHeaderLabels([c[0] for c in COLUMNS])
@@ -199,60 +314,66 @@ class LeadsWidget(QWidget):
         self._table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self._table.customContextMenuRequested.connect(self._show_context_menu)
         self._table.doubleClicked.connect(self._on_double_click)
-        self._table.setSortingEnabled(False)  # we sort manually
+        self._table.setSortingEnabled(False)
 
-        # Column widths
         hh = self._table.horizontalHeader()
         hh.setSectionResizeMode(QHeaderView.ResizeMode.Interactive)
         hh.setStretchLastSection(False)
-        for i, (_, _, width, _) in enumerate(COLUMNS):
+        for i, (_, _, width) in enumerate(COLUMNS):
             self._table.setColumnWidth(i, width)
         hh.sectionClicked.connect(self._header_clicked)
 
         layout.addWidget(self._table)
 
     # ------------------------------------------------------------------
-    # Data loading
-    # ------------------------------------------------------------------
 
-    def refresh(self) -> None:
-        """Reload all leads from the database and re-apply filters."""
-        self._all_leads = db.get_leads()
+    def load_session(self, session: dict) -> None:
+        self._session = session
+        keyword  = session.get("keyword", "—")
+        city     = session.get("city", "—")
+        count    = session.get("lead_count", 0)
+        raw_date = session.get("created_at", "")
+        try:
+            dt = datetime.strptime(raw_date[:19], "%Y-%m-%d %H:%M:%S")
+            date_str = dt.strftime("%d %b %Y  %I:%M %p")
+        except Exception:
+            date_str = raw_date
+
+        self._title.setText(f"🔍  {keyword}  —  {city}")
+        self._subtitle.setText(
+            f"Searched on {date_str}  ·  {count} lead{'s' if count != 1 else ''}"
+        )
+        self._export_hint.setText(
+            "To export this collection, go to the Export page."
+        )
+        self._search_input.clear()
+        self._all_leads = db.get_leads(search_id=session["id"])
         self._apply_filters()
 
     def _apply_filters(self) -> None:
-        query   = self._search_input.text().strip().lower()
-        status  = self._status_filter.currentText()
-        ltype   = self._type_filter.currentText()
-
+        query    = self._search_input.text().strip().lower()
         filtered = self._all_leads
 
-        if status != "All Statuses":
-            filtered = [l for l in filtered if l.get("status") == status]
-
-        if ltype != "All Types":
-            filtered = [l for l in filtered if l.get("lead_type") == ltype]
-
         if query:
-            search_keys = ("name", "phone", "mobile", "email",
-                           "address", "category", "facebook",
-                           "instagram", "notes", "city")
+            search_keys = (
+                "name", "phone", "mobile", "email",
+                "address", "category", "notes",
+            )
             filtered = [
                 l for l in filtered
                 if any(query in str(l.get(k, "")).lower() for k in search_keys)
             ]
 
-        # Sort
         col_key = COLUMNS[self._sort_col][1]
         filtered = sorted(
             filtered,
             key=lambda x: str(x.get(col_key, "") or "").lower(),
             reverse=not self._sort_asc,
         )
-
         self._filtered_leads = filtered
         self._populate_table(filtered)
-        self._count_label.setText(f"{len(filtered):,} lead{'s' if len(filtered) != 1 else ''}")
+        n = len(filtered)
+        self._count_lbl.setText(f"{n:,} lead{'s' if n != 1 else ''}")
 
     def _populate_table(self, leads: list[dict]) -> None:
         self._table.setUpdatesEnabled(False)
@@ -260,37 +381,22 @@ class LeadsWidget(QWidget):
         self._table.setRowCount(len(leads))
 
         for row_idx, lead in enumerate(leads):
-            lead_id = lead.get("id")
-
-            for col_idx, (_, key, _, _) in enumerate(COLUMNS):
+            for col_idx, (_, key, _) in enumerate(COLUMNS):
                 value = str(lead.get(key, "") or "")
                 item  = QTableWidgetItem(value)
                 item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)
 
-                # Store lead id on first column
                 if col_idx == 0:
-                    item.setData(Qt.ItemDataRole.UserRole, lead_id)
+                    item.setData(Qt.ItemDataRole.UserRole, lead.get("id"))
 
-                # Colour-code status column
                 if key == "status":
                     colour = STATUS_COLOURS.get(value, "#a6adc8")
                     item.setForeground(QBrush(QColor(colour)))
-                    font = QFont()
-                    font.setBold(True)
-                    item.setFont(font)
-
-                # Colour-code lead_type column
-                if key == "lead_type":
-                    colour = LEAD_TYPE_COLOURS.get(value, "#a6adc8")
-                    item.setForeground(QBrush(QColor(colour)))
+                    f = QFont(); f.setBold(True); item.setFont(f)
 
                 self._table.setItem(row_idx, col_idx, item)
 
         self._table.setUpdatesEnabled(True)
-
-    # ------------------------------------------------------------------
-    # Sorting
-    # ------------------------------------------------------------------
 
     def _header_clicked(self, col: int) -> None:
         if self._sort_col == col:
@@ -299,39 +405,31 @@ class LeadsWidget(QWidget):
             self._sort_col = col
             self._sort_asc = True
         self._apply_filters()
-
-        # Visual indicator on header
         hh = self._table.horizontalHeader()
-        hh.setSortIndicator(col, Qt.SortOrder.AscendingOrder if self._sort_asc else Qt.SortOrder.DescendingOrder)
+        hh.setSortIndicator(
+            col,
+            Qt.SortOrder.AscendingOrder if self._sort_asc
+            else Qt.SortOrder.DescendingOrder
+        )
         hh.setSortIndicatorShown(True)
 
-    # ------------------------------------------------------------------
-    # Interactions
-    # ------------------------------------------------------------------
-
-    def _get_lead_from_row(self, row: int) -> tuple[int, dict] | tuple[None, None]:
+    def _get_lead_from_row(self, row: int) -> tuple[int | None, dict | None]:
         item = self._table.item(row, 0)
-        if not item:
+        if not item or row >= len(self._filtered_leads):
             return None, None
-        lead_id = item.data(Qt.ItemDataRole.UserRole)
-        if lead_id is None or row >= len(self._filtered_leads):
-            return None, None
-        return lead_id, self._filtered_leads[row]
+        return item.data(Qt.ItemDataRole.UserRole), self._filtered_leads[row]
 
     def _on_double_click(self, index) -> None:
         col_key = COLUMNS[index.column()][1]
+        _, lead  = self._get_lead_from_row(index.row())
+        if not lead:
+            return
         if col_key == "notes":
             self._open_notes_editor(index.row())
-        elif col_key == "maps_link":
-            _, lead = self._get_lead_from_row(index.row())
-            if lead and lead.get("maps_link"):
-                webbrowser.open(lead["maps_link"])
-        elif col_key in ("whatsapp", "instagram", "facebook", "website"):
-            _, lead = self._get_lead_from_row(index.row())
-            if lead:
-                url = lead.get(col_key, "")
-                if url and url.startswith("http"):
-                    webbrowser.open(url)
+        elif col_key in ("whatsapp", "maps_link", "instagram", "facebook", "website"):
+            url = lead.get(col_key, "")
+            if url and url.startswith("http"):
+                webbrowser.open(url)
 
     def _show_context_menu(self, pos) -> None:
         row = self._table.rowAt(pos.y())
@@ -354,57 +452,36 @@ class LeadsWidget(QWidget):
 
         menu.addSeparator()
 
-        # Notes
         notes_act = QAction("✏  Edit Notes", self)
         notes_act.triggered.connect(lambda: self._open_notes_editor(row))
         menu.addAction(notes_act)
 
         menu.addSeparator()
 
-        # Google Maps
         maps_link = lead.get("maps_link", "")
         if maps_link:
-            open_maps_act = QAction("🗺  Open in Google Maps", self)
-            open_maps_act.triggered.connect(lambda: webbrowser.open(maps_link))
-            menu.addAction(open_maps_act)
+            act = QAction("🗺  Open in Google Maps", self)
+            act.triggered.connect(lambda: webbrowser.open(maps_link))
+            menu.addAction(act)
 
-            copy_maps_act = QAction("📋  Copy Google Maps Link", self)
-            copy_maps_act.triggered.connect(lambda: self._copy_to_clipboard(maps_link))
-            menu.addAction(copy_maps_act)
+            act2 = QAction("📋  Copy Google Maps Link", self)
+            act2.triggered.connect(lambda: self._copy(maps_link))
+            menu.addAction(act2)
 
-        # WhatsApp
         wa = lead.get("whatsapp", "")
         if wa:
-            wa_act = QAction("💬  Open WhatsApp", self)
-            wa_act.triggered.connect(lambda: webbrowser.open(wa))
-            menu.addAction(wa_act)
+            act = QAction("💬  Open WhatsApp", self)
+            act.triggered.connect(lambda: webbrowser.open(wa))
+            menu.addAction(act)
 
-        # Website
         website = lead.get("website", "")
         if website:
-            web_act = QAction("🌐  Open Website", self)
-            web_act.triggered.connect(lambda: webbrowser.open(website))
-            menu.addAction(web_act)
-
-        # Collections
-        menu.addSeparator()
-        coll_menu = menu.addMenu("📁  Add to Collection")
-        collections = db.get_collections()
-        if collections:
-            for coll in collections:
-                act = QAction(coll["name"], self)
-                coll_id = coll["id"]
-                act.triggered.connect(
-                    lambda checked, _cid=coll_id, _lid=lead_id:
-                    self._add_to_collection(_cid, _lid)
-                )
-                coll_menu.addAction(act)
-        else:
-            coll_menu.addAction(QAction("(No collections yet)", self))
+            act = QAction("🌐  Open Website", self)
+            act.triggered.connect(lambda: webbrowser.open(website))
+            menu.addAction(act)
 
         menu.addSeparator()
 
-        # Delete
         del_act = QAction("🗑  Delete Lead", self)
         del_act.triggered.connect(lambda: self._delete_lead(lead_id))
         menu.addAction(del_act)
@@ -413,32 +490,80 @@ class LeadsWidget(QWidget):
 
     def _set_status(self, lead_id: int, status: str) -> None:
         db.update_lead_status(lead_id, status)
-        self.refresh()
+        # Update in-memory list too
+        for lead in self._all_leads:
+            if lead.get("id") == lead_id:
+                lead["status"] = status
+        self._apply_filters()
 
     def _open_notes_editor(self, row: int) -> None:
         lead_id, lead = self._get_lead_from_row(row)
         if lead_id is None:
             return
-        dlg = NotesDialog(lead_id, lead.get("notes", ""), parent=self)
+        dlg = _NotesDialog(lead.get("notes", ""), parent=self)
         if dlg.exec():
-            db.update_lead_notes(lead_id, dlg.get_notes())
-            self.refresh()
+            new_notes = dlg.get_notes()
+            db.update_lead_notes(lead_id, new_notes)
+            for l in self._all_leads:
+                if l.get("id") == lead_id:
+                    l["notes"] = new_notes
+            self._apply_filters()
 
     def _delete_lead(self, lead_id: int) -> None:
         reply = QMessageBox.question(
-            self,
-            "Delete Lead",
-            "Permanently delete this lead?",
+            self, "Delete Lead", "Permanently delete this lead?",
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
         )
         if reply == QMessageBox.StandardButton.Yes:
             db.delete_lead(lead_id)
-            self.refresh()
-
-    def _add_to_collection(self, collection_id: int, lead_id: int) -> None:
-        db.add_leads_to_collection(collection_id, [lead_id])
+            self._all_leads = [l for l in self._all_leads if l.get("id") != lead_id]
+            self._apply_filters()
 
     @staticmethod
-    def _copy_to_clipboard(text: str) -> None:
+    def _copy(text: str) -> None:
         from PyQt6.QtWidgets import QApplication
         QApplication.clipboard().setText(text)
+
+
+# ---------------------------------------------------------------------------
+# Main widget (two-level stacked view)
+# ---------------------------------------------------------------------------
+
+class LeadsWidget(QWidget):
+    """Collections list → leads table drill-down."""
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self._build_ui()
+
+    def _build_ui(self) -> None:
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(0)
+
+        self._stack = QStackedWidget()
+
+        self._collections_page = _CollectionsPage(
+            on_open_session=self._open_session
+        )
+        self._leads_page = _LeadsTablePage(
+            on_back=self._go_back
+        )
+
+        self._stack.addWidget(self._collections_page)  # index 0
+        self._stack.addWidget(self._leads_page)         # index 1
+
+        layout.addWidget(self._stack)
+
+    def _open_session(self, session: dict) -> None:
+        self._leads_page.load_session(session)
+        self._stack.setCurrentIndex(1)
+
+    def _go_back(self) -> None:
+        self._collections_page.refresh()
+        self._stack.setCurrentIndex(0)
+
+    def refresh(self) -> None:
+        """Called by main_window when navigating to this tab."""
+        self._collections_page.refresh()
+        self._stack.setCurrentIndex(0)

@@ -1,0 +1,439 @@
+ ======================================================================
+  Darklightz Lead Generator ΓÇö Build Script
+ ======================================================================
+
+[1/7] Checking Python installation...
+ Found Python 3.14.3
+
+[2/7] Setting up virtual environment...
+ Using existing .venv
+
+[3/7] Installing dependencies (this may take a few minutes)...
+
+[notice] A new release of pip is available: 25.3 -> 26.1.2
+[notice] To update, run: python.exe -m pip install --upgrade pip
+ERROR: To modify pip, please run the following command:
+C:\Users\obaid\Desktop\darklightz-leadgen\.venv\Scripts\python.exe -m pip install --upgrade pip --quiet
+ WARNING: pip upgrade failed ΓÇö continuing with existing pip version.
+Requirement already satisfied: PyQt6>=6.6.0 in c:\users\obaid\desktop\darklightz-leadgen\.venv\lib\site-packages (from -r requirements.txt (line 1)) (6.11.0)
+Requirement already satisfied: playwright>=1.44.0 in c:\users\obaid\desktop\darklightz-leadgen\.venv\lib\site-packages (from -r requirements.txt (line 2)) (1.61.0)
+Requirement already satisfied: openpyxl>=3.1.2 in c:\users\obaid\desktop\darklightz-leadgen\.venv\lib\site-packages (from -r requirements.txt (line 3)) (3.1.5)
+Requirement already satisfied: reportlab>=4.2.0 in c:\users\obaid\desktop\darklightz-leadgen\.venv\lib\site-packages (from -r requirements.txt (line 4)) (5.0.0)
+Requirement already satisfied: requests>=2.31.0 in c:\users\obaid\desktop\darklightz-leadgen\.venv\lib\site-packages (from -r requirements.txt (line 5)) (2.34.2)
+Requirement already satisfied: beautifulsoup4>=4.12.2 in c:\users\obaid\desktop\darklightz-leadgen\.venv\lib\site-packages (from -r requirements.txt (line 6)) (4.15.0)
+Requirement already satisfied: lxml>=5.0.0 in c:\users\obaid\desktop\darklightz-leadgen\.venv\lib\site-packages (from -r requirements.txt (line 7)) (6.1.1)
+Requirement already satisfied: PyQt6-sip<14,>=13.8 in c:\users\obaid\desktop\darklightz-leadgen\.venv\lib\site-packages (from PyQt6>=6.6.0->-r requirements.txt (line 1)) (13.11.1)
+Requirement already satisfied: PyQt6-Qt6<6.12.0,>=6.11.0 in c:\users\obaid\desktop\darklightz-leadgen\.venv\lib\site-packages (from PyQt6>=6.6.0->-r requirements.txt (line 1)) (6.11.1)
+Requirement already satisfied: pyee<14,>=13 in c:\users\obaid\desktop\darklightz-leadgen\.venv\lib\site-packages (from playwright>=1.44.0->-r requirements.txt (line 2)) (13.0.1)
+Requirement already satisfied: greenlet<4.0.0,>=3.1.1 in c:\users\obaid\desktop\darklightz-leadgen\.venv\lib\site-packages (from playwright>=1.44.0->-r requirements.txt (line 2)) (3.5.3)
+Requirement already satisfied: typing-extensions in c:\users\obaid\desktop\darklightz-leadgen\.venv\lib\site-packages (from pyee<14,>=13->playwright>=1.44.0->-r requirements.txt (line 2)) (4.16.0)
+Requirement already satisfied: et-xmlfile in c:\users\obaid\desktop\darklightz-leadgen\.venv\lib\site-packages (from openpyxl>=3.1.2->-r requirements.txt (line 3)) (2.0.0)
+Requirement already satisfied: pillow>=9.0.0 in c:\users\obaid\desktop\darklightz-leadgen\.venv\lib\site-packages (from reportlab>=4.2.0->-r requirements.txt (line 4)) (12.3.0)
+Requirement already satisfied: charset-normalizer in c:\users\obaid\desktop\darklightz-leadgen\.venv\lib\site-packages (from reportlab>=4.2.0->-r requirements.txt (line 4)) (3.4.9)
+Requirement already satisfied: idna<4,>=2.5 in c:\users\obaid\desktop\darklightz-leadgen\.venv\lib\site-packages (from requests>=2.31.0->-r requirements.txt (line 5)) (3.18)
+Requirement already satisfied: urllib3<3,>=1.26 in c:\users\obaid\desktop\darklightz-leadgen\.venv\lib\site-packages (from requests>=2.31.0->-r requirements.txt (line 5)) (2.7.0)
+Requirement already satisfied: certifi>=2023.5.7 in c:\users\obaid\desktop\darklightz-leadgen\.venv\lib\site-packages (from requests>=2.31.0->-r requirements.txt (line 5)) (2026.6.17)
+Requirement already satisfied: soupsieve>=1.6.1 in c:\users\obaid\desktop\darklightz-leadgen\.venv\lib\site-packages (from beautifulsoup4>=4.12.2->-r requirements.txt (line 6)) (2.8.4)
+
+[notice] A new release of pip is available: 25.3 -> 26.1.2
+[notice] To update, run: python.exe -m pip install --upgrade pip
+Requirement already satisfied: pyinstaller in c:\users\obaid\desktop\darklightz-leadgen\.venv\lib\site-packages (6.21.0)
+Requirement already satisfied: altgraph in c:\users\obaid\desktop\darklightz-leadgen\.venv\lib\site-packages (from pyinstaller) (0.17.5)
+Requirement already satisfied: packaging>=22.0 in c:\users\obaid\desktop\darklightz-leadgen\.venv\lib\site-packages (from pyinstaller) (26.2)
+Requirement already satisfied: pefile>=2022.5.30 in c:\users\obaid\desktop\darklightz-leadgen\.venv\lib\site-packages (from pyinstaller) (2024.8.26)
+Requirement already satisfied: pyinstaller-hooks-contrib>=2026.6 in c:\users\obaid\desktop\darklightz-leadgen\.venv\lib\site-packages (from pyinstaller) (2026.6)
+Requirement already satisfied: pywin32-ctypes>=0.2.1 in c:\users\obaid\desktop\darklightz-leadgen\.venv\lib\site-packages (from pyinstaller) (0.2.3)
+Requirement already satisfied: setuptools>=42.0.0 in c:\users\obaid\desktop\darklightz-leadgen\.venv\lib\site-packages (from pyinstaller) (83.0.0)
+
+[notice] A new release of pip is available: 25.3 -> 26.1.2
+[notice] To update, run: python.exe -m pip install --upgrade pip
+ All packages installed.
+
+[4/7] Installing Playwright Chromium browser (~130 MB)...
+ Playwright Chromium installed.
+
+[5/7] Preparing build environment...
+ Stopping any running DarklightzLeadGenerator.exe...
+ Removing old dist\DarklightzLeadGenerator ...
+ Old dist folder removed successfully.
+ Build environment ready.
+
+[6/7] Building Windows executable (this takes 2-5 minutes)...
+ Playwright driver: C:\Users\obaid\Desktop\darklightz-leadgen\.venv\Lib\site-packages\playwright\driver
+
+449 INFO: PyInstaller: 6.21.0, contrib hooks: 2026.6
+450 INFO: Python: 3.14.3
+676 INFO: Platform: Windows-10-10.0.19045-SP0
+677 INFO: Python environment: C:\Users\obaid\Desktop\darklightz-leadgen\.venv
+680 INFO: wrote C:\Users\obaid\Desktop\darklightz-leadgen\DarklightzLeadGenerator.spec
+685 INFO: Removing temporary files and cleaning cache in C:\Users\obaid\AppData\Local\pyinstaller
+4867 INFO: Module search paths (PYTHONPATH):
+['C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Scripts\\pyinstaller.exe',
+ 'C:\\Program Files\\Python314\\python314.zip',
+ 'C:\\Program Files\\Python314\\DLLs',
+ 'C:\\Program Files\\Python314\\Lib',
+ 'C:\\Program Files\\Python314',
+ 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv',
+ 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages',
+ 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen']
+5208 INFO: Appending 'binaries' from .spec
+5225 INFO: Appending 'datas' from .spec
+5511 INFO: checking Analysis
+5511 INFO: Building Analysis because Analysis-00.toc is non existent
+5513 INFO: Looking for Python shared library...
+5517 INFO: Using Python shared library: C:\Program Files\Python314\python314.dll
+5517 INFO: Running Analysis Analysis-00.toc
+5518 INFO: Target bytecode optimization level: 0
+5519 INFO: Initializing module dependency graph...
+5520 INFO: Initializing module graph hook caches...
+5538 INFO: Analyzing modules for base_library.zip ...
+7474 INFO: Processing standard module hook 'hook-encodings.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+7995 INFO: Processing standard module hook 'hook-math.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+10199 INFO: Processing standard module hook 'hook-difflib.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+10216 INFO: Processing standard module hook 'hook-heapq.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+10381 INFO: Processing standard module hook 'hook-pickle.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+12408 INFO: Caching module dependency graph...
+12443 INFO: Analyzing C:\Users\obaid\Desktop\darklightz-leadgen\main.py
+12573 INFO: Processing standard module hook 'hook-PyQt6.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+14206 INFO: Processing standard module hook 'hook-PyQt6.QtWidgets.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+17685 INFO: Processing standard module hook 'hook-PyQt6.QtCore.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+21993 INFO: Processing standard module hook 'hook-PyQt6.QtGui.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+36124 INFO: Processing standard module hook 'hook-sqlite3.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+36507 INFO: Processing standard module hook 'hook-webbrowser.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+36580 INFO: Processing standard module hook 'hook-sysconfig.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+36586 INFO: Processing standard module hook 'hook-_ctypes.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+36676 INFO: Processing standard module hook 'hook-playwright.sync_api.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\playwright\\_impl\\__pyinstaller'
+37686 INFO: Processing standard module hook 'hook-multiprocessing.util.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+37852 INFO: Processing standard module hook 'hook-xml.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+39035 INFO: Processing standard module hook 'hook-platform.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+39655 INFO: Processing standard module hook 'hook-openpyxl.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+39789 INFO: Processing standard module hook 'hook-lxml.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+40159 INFO: Processing standard module hook 'hook-lxml.etree.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+40409 INFO: Processing standard module hook 'hook-xml.etree.cElementTree.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+40942 INFO: Processing standard module hook 'hook-PIL.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+41132 INFO: Processing standard module hook 'hook-PIL.Image.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+41828 INFO: Processing standard module hook 'hook-PIL.ImageFilter.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+43055 INFO: Processing standard module hook 'hook-reportlab.lib.utils.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+46023 INFO: Processing standard module hook 'hook-reportlab.pdfbase._fontdata.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+46784 INFO: Processing standard module hook 'hook-charset_normalizer.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+46948 INFO: Processing pre-safe-import-module hook 'hook-typing_extensions.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+46950 INFO: SetuptoolsInfo: initializing cached setuptools info...
+51689 INFO: Processing standard module hook 'hook-xml.dom.domreg.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+51831 INFO: Processing standard module hook 'hook-urllib3.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+51996 INFO: Processing pre-safe-import-module hook 'hook-backports.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+51997 INFO: Setuptools: 'backports' appears to be a full setuptools-vendored copy - creating alias to 'setuptools._vendor.backports'!
+52009 INFO: Processing standard module hook 'hook-setuptools.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+52031 INFO: Processing pre-safe-import-module hook 'hook-distutils.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+52097 INFO: Processing pre-safe-import-module hook 'hook-jaraco.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+52097 INFO: Setuptools: 'jaraco' appears to be a full setuptools-vendored copy - creating alias to 'setuptools._vendor.jaraco'!
+52116 INFO: Processing pre-safe-import-module hook 'hook-more_itertools.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+52116 INFO: Setuptools: 'more_itertools' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.more_itertools'!
+52447 INFO: Processing pre-safe-import-module hook 'hook-packaging.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+52781 INFO: Processing standard module hook 'hook-setuptools._vendor.jaraco.text.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+52783 INFO: Processing pre-safe-import-module hook 'hook-importlib_resources.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+53562 INFO: Processing pre-safe-import-module hook 'hook-tomli.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+53563 INFO: Setuptools: 'tomli' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.tomli'!
+55687 INFO: Processing pre-safe-import-module hook 'hook-wheel.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+55687 INFO: Setuptools: 'wheel' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.wheel'!
+56332 INFO: Processing standard module hook 'hook-certifi.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+56520 INFO: Analyzing hidden import 'PyQt6.QtNetwork'
+56876 INFO: Processing standard module hook 'hook-PyQt6.QtNetwork.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+59136 INFO: Analyzing hidden import 'bs4'
+59723 INFO: Analyzing hidden import 'playwright.__main__'
+59725 INFO: Analyzing hidden import 'playwright._impl.__pyinstaller'
+59726 INFO: Analyzing hidden import 'playwright._impl._async_base'
+59735 INFO: Analyzing hidden import 'playwright._impl._path_utils'
+59737 INFO: Analyzing hidden import 'playwright.async_api'
+59750 INFO: Processing standard module hook 'hook-playwright.async_api.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\playwright\\_impl\\__pyinstaller'
+60465 INFO: Analyzing hidden import 'PyQt6.QAxContainer'
+60485 INFO: Processing standard module hook 'hook-PyQt6.QAxContainer.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+60926 INFO: Analyzing hidden import 'PyQt6.QtBluetooth'
+61060 INFO: Processing standard module hook 'hook-PyQt6.QtBluetooth.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+61338 INFO: Analyzing hidden import 'PyQt6.QtDBus'
+61413 INFO: Processing standard module hook 'hook-PyQt6.QtDBus.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+61841 INFO: Analyzing hidden import 'PyQt6.QtDesigner'
+61917 INFO: Processing standard module hook 'hook-PyQt6.QtDesigner.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+62555 WARNING: QtLibraryInfo(PyQt6): could not find translations with base name 'designer'! These translations will not be collected.
+62556 INFO: Analyzing hidden import 'PyQt6.QtHelp'
+62610 INFO: Processing standard module hook 'hook-PyQt6.QtHelp.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+63171 INFO: Analyzing hidden import 'PyQt6.QtMultimedia'
+63367 INFO: Processing standard module hook 'hook-PyQt6.QtMultimedia.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+65428 INFO: Analyzing hidden import 'PyQt6.QtMultimediaWidgets'
+65439 INFO: Processing standard module hook 'hook-PyQt6.QtMultimediaWidgets.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+65930 INFO: Analyzing hidden import 'PyQt6.QtNfc'
+65981 INFO: Processing standard module hook 'hook-PyQt6.QtNfc.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+66436 INFO: Analyzing hidden import 'PyQt6.QtOpenGL'
+66991 INFO: Processing standard module hook 'hook-PyQt6.QtOpenGL.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+67716 INFO: Analyzing hidden import 'PyQt6.QtOpenGLWidgets'
+67726 INFO: Processing standard module hook 'hook-PyQt6.QtOpenGLWidgets.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+68225 INFO: Analyzing hidden import 'PyQt6.QtPdf'
+68269 INFO: Processing standard module hook 'hook-PyQt6.QtPdf.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+68861 INFO: Analyzing hidden import 'PyQt6.QtPdfWidgets'
+68874 INFO: Processing standard module hook 'hook-PyQt6.QtPdfWidgets.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+69341 INFO: Analyzing hidden import 'PyQt6.QtPositioning'
+69440 INFO: Processing standard module hook 'hook-PyQt6.QtPositioning.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+70528 INFO: Analyzing hidden import 'PyQt6.QtPrintSupport'
+70583 INFO: Processing standard module hook 'hook-PyQt6.QtPrintSupport.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+71178 INFO: Analyzing hidden import 'PyQt6.QtQml'
+71326 INFO: Processing standard module hook 'hook-PyQt6.QtQml.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+83720 INFO: Analyzing hidden import 'PyQt6.QtQuick'
+83927 INFO: Processing standard module hook 'hook-PyQt6.QtQuick.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+84793 INFO: Analyzing hidden import 'PyQt6.QtQuick3D'
+84824 INFO: Processing standard module hook 'hook-PyQt6.QtQuick3D.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+85457 INFO: Analyzing hidden import 'PyQt6.QtQuickWidgets'
+85482 INFO: Processing standard module hook 'hook-PyQt6.QtQuickWidgets.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+86036 INFO: Analyzing hidden import 'PyQt6.QtRemoteObjects'
+86073 INFO: Processing standard module hook 'hook-PyQt6.QtRemoteObjects.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+86528 INFO: Analyzing hidden import 'PyQt6.QtSensors'
+86606 INFO: Processing standard module hook 'hook-PyQt6.QtSensors.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+87334 INFO: Analyzing hidden import 'PyQt6.QtSerialPort'
+87368 INFO: Processing standard module hook 'hook-PyQt6.QtSerialPort.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+87847 INFO: Analyzing hidden import 'PyQt6.QtSpatialAudio'
+87887 INFO: Processing standard module hook 'hook-PyQt6.QtSpatialAudio.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+88396 INFO: Analyzing hidden import 'PyQt6.QtSql'
+88515 INFO: Processing standard module hook 'hook-PyQt6.QtSql.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+90003 INFO: Analyzing hidden import 'PyQt6.QtStateMachine'
+90054 INFO: Processing standard module hook 'hook-PyQt6.QtStateMachine.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+90314 INFO: Analyzing hidden import 'PyQt6.QtSvg'
+90343 INFO: Processing standard module hook 'hook-PyQt6.QtSvg.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+90825 INFO: Analyzing hidden import 'PyQt6.QtSvgWidgets'
+90833 INFO: Processing standard module hook 'hook-PyQt6.QtSvgWidgets.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+91338 INFO: Analyzing hidden import 'PyQt6.QtTest'
+91372 INFO: Processing standard module hook 'hook-PyQt6.QtTest.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+91884 INFO: Analyzing hidden import 'PyQt6.QtTextToSpeech'
+91908 INFO: Processing standard module hook 'hook-PyQt6.QtTextToSpeech.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+92942 INFO: Analyzing hidden import 'PyQt6.QtWebChannel'
+92949 INFO: Processing standard module hook 'hook-PyQt6.QtWebChannel.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+93399 INFO: Analyzing hidden import 'PyQt6.QtWebSockets'
+93440 INFO: Processing standard module hook 'hook-PyQt6.QtWebSockets.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+93873 INFO: Analyzing hidden import 'PyQt6.QtXml'
+93948 INFO: Processing standard module hook 'hook-PyQt6.QtXml.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+94391 INFO: Analyzing hidden import 'PyQt6.lupdate'
+94401 INFO: Processing standard module hook 'hook-PyQt6.uic.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+94940 INFO: Analyzing hidden import 'PyQt6.lupdate.pylupdate'
+94944 INFO: Analyzing hidden import 'PyQt6.uic.pyuic'
+94952 INFO: Processing module hooks (post-graph stage)...
+95324 INFO: Processing standard module hook 'hook-lxml.isoschematron.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+95825 INFO: Processing standard module hook 'hook-PIL.SpiderImagePlugin.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+96704 INFO: Processing standard module hook 'hook-lxml.objectify.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+96767 INFO: Performing binary vs. data reclassification (3742 entries)
+97326 INFO: Looking for ctypes DLLs
+97368 INFO: Analyzing run-time hooks ...
+97374 INFO: Including run-time hook 'pyi_rth_inspect.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+97378 INFO: Including run-time hook 'pyi_rth_pkgutil.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+97381 INFO: Including run-time hook 'pyi_rth_multiprocessing.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+97385 INFO: Including run-time hook 'pyi_rth_pyqt6.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+97389 INFO: Processing pre-find-module-path hook 'hook-_pyi_rth_utils.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_find_module_path'
+97392 INFO: Processing standard module hook 'hook-_pyi_rth_utils.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+97396 INFO: Including run-time hook 'pyi_rth_setuptools.py' from 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+97498 INFO: Creating base_library.zip...
+97523 INFO: Looking for dynamic libraries
+98947 INFO: Extra DLL search directories (AddDllDirectory): ['C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\bin']
+98947 INFO: Extra DLL search directories (PATH): ['C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\bin']
+102465 WARNING: Library not found: could not resolve 'Qt63DRender.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\geometryloaders\\defaultgeometryloader.dll'.
+102467 WARNING: Library not found: could not resolve 'Qt63DCore.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\geometryloaders\\defaultgeometryloader.dll'.
+102467 WARNING: Library not found: could not resolve 'Qt63DRender.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\geometryloaders\\gltfgeometryloader.dll'.
+102468 WARNING: Library not found: could not resolve 'Qt63DCore.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\geometryloaders\\gltfgeometryloader.dll'.
+102497 WARNING: Library not found: could not resolve 'Qt6QmlCompiler.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\qmllint\\qdslintplugin.dll'.
+102499 WARNING: Library not found: could not resolve 'Qt6QmlCompiler.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\qmllint\\quicklintplugin.dll'.
+102501 WARNING: Library not found: could not resolve 'Qt6QmlCompiler.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\qmlls\\qmllsquickplugin.dll'.
+102502 WARNING: Library not found: could not resolve 'Qt63DRender.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\renderers\\openglrenderer.dll'.
+102506 WARNING: Library not found: could not resolve 'Qt63DCore.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\renderers\\openglrenderer.dll'.
+102506 WARNING: Library not found: could not resolve 'Qt63DRender.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\renderers\\rhirenderer.dll'.
+102508 WARNING: Library not found: could not resolve 'Qt63DCore.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\renderers\\rhirenderer.dll'.
+102508 WARNING: Library not found: could not resolve 'Qt63DRender.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\sceneparsers\\assimpsceneimport.dll'.
+102509 WARNING: Library not found: could not resolve 'Qt63DExtras.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\sceneparsers\\assimpsceneimport.dll'.
+102511 WARNING: Library not found: could not resolve 'Qt63DAnimation.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\sceneparsers\\assimpsceneimport.dll'.
+102512 WARNING: Library not found: could not resolve 'Qt63DCore.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\sceneparsers\\assimpsceneimport.dll'.
+102513 WARNING: Library not found: could not resolve 'Qt63DRender.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\sceneparsers\\gltfsceneexport.dll'.
+102516 WARNING: Library not found: could not resolve 'Qt63DExtras.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\sceneparsers\\gltfsceneexport.dll'.
+102517 WARNING: Library not found: could not resolve 'Qt63DCore.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\sceneparsers\\gltfsceneexport.dll'.
+102518 WARNING: Library not found: could not resolve 'Qt63DRender.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\sceneparsers\\gltfsceneimport.dll'.
+102519 WARNING: Library not found: could not resolve 'Qt63DExtras.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\sceneparsers\\gltfsceneimport.dll'.
+102520 WARNING: Library not found: could not resolve 'Qt63DCore.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\sceneparsers\\gltfsceneimport.dll'.
+102522 WARNING: Library not found: could not resolve 'Qt6Scxml.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\scxmldatamodel\\qscxmlecmascriptdatamodel.dll'.
+102525 WARNING: Library not found: could not resolve 'fbclient.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\sqldrivers\\qsqlibase.dll'.
+102528 WARNING: Library not found: could not resolve 'MIMAPI64.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\sqldrivers\\qsqlmimer.dll'.
+102531 WARNING: Library not found: could not resolve 'OCI.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\sqldrivers\\qsqloci.dll'.
+102534 WARNING: Library not found: could not resolve 'LIBPQ.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\sqldrivers\\qsqlpsql.dll'.
+102541 WARNING: Library not found: could not resolve 'Qt6WebView.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\webview\\qtwebview_webengine.dll'.
+102542 WARNING: Library not found: could not resolve 'Qt6WebEngineCore.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\webview\\qtwebview_webengine.dll'.
+102543 WARNING: Library not found: could not resolve 'Qt6WebEngineQuick.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\webview\\qtwebview_webengine.dll'.
+102544 WARNING: Library not found: could not resolve 'Qt6WebView.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\plugins\\webview\\qtwebview_webview2.dll'.
+102547 WARNING: Library not found: could not resolve 'Qt6QmlCore.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\qml\\QtCore\\qtqmlcoreplugin.dll'.
+102550 WARNING: Library not found: could not resolve 'Qt6QmlNetwork.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\qml\\QtNetwork\\qmlnetworkplugin.dll'.
+102552 WARNING: Library not found: could not resolve 'Qt6QmlXmlListModel.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\qml\\QtQml\\XmlListModel\\qmlxmllistmodelplugin.dll'.
+102557 WARNING: Library not found: could not resolve 'Qt6Quick3DParticleEffects.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\qml\\QtQuick3D\\ParticleEffects\\qtquick3dparticleeffectsplugin.dll'.
+102562 WARNING: Library not found: could not resolve 'Qt6QuickControls2FluentWinUI3StyleImpl.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\qml\\QtQuick\\Controls\\FluentWinUI3\\impl\\qtquickcontrols2fluentwinui3styleimplplugin.dll'.
+102564 WARNING: Library not found: could not resolve 'Qt6QuickControls2FluentWinUI3StyleImpl.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\qml\\QtQuick\\Controls\\FluentWinUI3\\qtquickcontrols2fluentwinui3styleplugin.dll'.
+102569 WARNING: Library not found: could not resolve 'Qt6QuickControls2WindowsStyleImpl.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\qml\\QtQuick\\Controls\\Windows\\impl\\qtquickcontrols2windowsstyleimplplugin.dll'.
+102575 WARNING: Library not found: could not resolve 'Qt6QmlLocalStorage.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\qml\\QtQuick\\LocalStorage\\qmllocalstorageplugin.dll'.
+102578 WARNING: Library not found: could not resolve 'Qt63DQuickScene2D.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\qml\\QtQuick\\Scene2D\\qtquickscene2dplugin.dll'.
+102579 WARNING: Library not found: could not resolve 'Qt63DQuickScene3D.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\qml\\QtQuick\\Scene3D\\qtquickscene3dplugin.dll'.
+102581 WARNING: Library not found: could not resolve 'Qt6QuickShapesDesignHelpers.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\qml\\QtQuick\\Shapes\\DesignHelpers\\qtquickshapesdesignhelpersplugin.dll'.
+102585 WARNING: Library not found: could not resolve 'Qt6QuickVectorImageHelpers.dll', dependency of 'C:\\Users\\obaid\\Desktop\\darklightz-leadgen\\.venv\\Lib\\site-packages\\PyQt6\\Qt6\\qml\\QtQuick\\VectorImage\\Helpers\\qquickvectorimagehelpersplugin.dll'.
+102820 INFO: Warnings written to C:\Users\obaid\Desktop\darklightz-leadgen\build\DarklightzLeadGenerator\warn-DarklightzLeadGenerator.txt
+102922 INFO: Graph cross-reference written to C:\Users\obaid\Desktop\darklightz-leadgen\build\DarklightzLeadGenerator\xref-DarklightzLeadGenerator.html
+103175 INFO: checking PYZ
+103175 INFO: Building PYZ because PYZ-00.toc is non existent
+103176 INFO: Building PYZ (ZlibArchive) C:\Users\obaid\Desktop\darklightz-leadgen\build\DarklightzLeadGenerator\PYZ-00.pyz
+103764 INFO: Building PYZ (ZlibArchive) C:\Users\obaid\Desktop\darklightz-leadgen\build\DarklightzLeadGenerator\PYZ-00.pyz completed successfully.
+103795 INFO: checking PKG
+103795 INFO: Building PKG because PKG-00.toc is non existent
+103795 INFO: Building PKG (CArchive) DarklightzLeadGenerator.pkg
+103815 INFO: Building PKG (CArchive) DarklightzLeadGenerator.pkg completed successfully.
+103817 INFO: Bootloader C:\Users\obaid\Desktop\darklightz-leadgen\.venv\Lib\site-packages\PyInstaller\bootloader\Windows-64bit-intel\runw.exe
+103817 INFO: checking EXE
+103822 INFO: Building EXE because EXE-00.toc is non existent
+103822 INFO: Building EXE from EXE-00.toc
+103823 INFO: Copying bootloader EXE to C:\Users\obaid\Desktop\darklightz-leadgen\build\DarklightzLeadGenerator\DarklightzLeadGenerator.exe
+103828 INFO: Copying icon to EXE
+103832 INFO: Copying 0 resources to EXE
+103832 INFO: Embedding manifest in EXE
+103837 INFO: Appending PKG archive to EXE
+103844 INFO: Fixing EXE headers
+104143 INFO: Building EXE from EXE-00.toc completed successfully.
+104342 INFO: checking COLLECT
+104344 INFO: Building COLLECT because COLLECT-00.toc is non existent
+104349 INFO: Building COLLECT COLLECT-00.toc
+111645 INFO: Building COLLECT COLLECT-00.toc completed successfully.
+111798 INFO: Build complete! The results are available in: C:\Users\obaid\Desktop\darklightz-leadgen\dist
+
+[7/7] Copying Chromium browser into dist folder...
+ (Makes the .exe work on any PC without installing Playwright)
+ Playwright browsers source: C:\Users\obaid\AppData\Local\ms-playwright
+611 File(s) copied
+ Chromium successfully copied to dist folder.
+
+ ==============================================================
+  Build complete
+
+  Application ready at:
+  dist\DarklightzLeadGenerator\DarklightzLeadGenerator.exe
+
+  To share or install on another PC:
+    ZIP the entire  dist\DarklightzLeadGenerator\  folder
+    and extract it on the target machine ΓÇö no install needed.
+ ==============================================================
+
+Press any key to continue . . .
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

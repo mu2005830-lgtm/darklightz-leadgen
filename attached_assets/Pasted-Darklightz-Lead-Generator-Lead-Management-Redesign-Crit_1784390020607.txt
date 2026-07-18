@@ -1,0 +1,83 @@
+Darklightz Lead Generator – Lead Management Redesign (Critical)
+The application is working much better now, but there are still some important improvements that need to be made. Do not rebuild the application. Keep all existing functionality and improve the following areas.
+1. Fix Address Collection
+The application still does not display the full business address.
+Requirements:
+Always try to collect the complete written address from the Google Business Profile.
+If the full address is available, display it in the lead details and export files.
+Keep the Google Maps link as well.
+If the written address truly cannot be extracted, leave it blank rather than inventing one.
+2. Completely Redesign Lead Management
+The current "Leads" page is not organized properly.
+Instead of showing every business in one large list, redesign it to use Lead Collections (Search Sessions).
+Example:
+Lead Collection #1
+Search: Gym
+Location: Lahore
+Date: 18 July 2026
+Time: 3:15 PM
+Total Leads: 50
+Lead Collection #2
+Search: Restaurant
+Location: Lahore
+Date: 18 July 2026
+Time: 6:40 PM
+Total Leads: 50
+Lead Collection #3
+Search: Salon
+Location: Islamabad
+Date: 19 July 2026
+Time: 10:05 AM
+Total Leads: 42
+This page should only show these Lead Collections.
+3. Opening a Lead Collection
+When I click a Lead Collection, only then should it open the list of businesses found during that search.
+That page should contain:
+Business Name
+Category
+Phone
+WhatsApp
+Email
+Address
+Google Maps Link
+Rating
+Reviews
+Instagram
+Facebook
+Website
+Notes
+Status
+This makes each search a separate project instead of mixing all businesses together.
+4. Export Redesign
+The Export button should not export the entire database.
+Instead, when I click Export, show a dialog:
+Select Lead Collection to Export
+Example:
+☐ Gym - Lahore - 18 Jul 2026 - 50 Leads
+☐ Restaurant - Lahore - 18 Jul 2026 - 50 Leads
+☐ Salon - Islamabad - 19 Jul 2026 - 42 Leads
+After I select one, export only that Lead Collection.
+Supported formats:
+Excel
+CSV
+PDF
+5. Database Structure
+Each Lead Collection must store:
+Collection ID
+Search Keyword
+Location
+Date
+Time
+Number of Leads
+Notes
+Each business should belong to exactly one Lead Collection.
+Never overwrite previous searches.
+6. Professional Experience
+The application should feel like a CRM.
+I should be able to quickly see:
+What I searched
+When I searched it
+How many leads were found
+Then open that collection and manage those leads separately.
+This is much more organized than having one huge mixed list of businesses.
+Please implement these improvements while preserving all existing functionality. The goal is to make the application feel like a professional lead management tool developed by Darklightz Studio, with clean organization, easy navigation, and flexible exporting. And on export this is what is showing so make sure you fix everything use my original previous file to diagnos it cause previous file was working really good

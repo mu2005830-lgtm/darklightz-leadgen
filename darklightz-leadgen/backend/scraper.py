@@ -444,21 +444,60 @@ class ScraperWorker(QThread):
             data["longitude"] = lng
 
             # ---- Address ------------------------------------------------
+            # Try every known selector; pick the longest plausible result.
+            _addr_candidates: list[str] = []
             for sel in [
-                '[data-item-id="address"]',
                 'button[data-item-id="address"]',
+                '[data-item-id="address"]',
                 '[aria-label*="Address"]',
+                '[aria-label*="address"]',
+                'div[data-section-id="address"]',
+                'div.rogA2c',
                 'div.rogA2c span',
+                '.LrzXr',
+                'span.LrzXr',
+                'div.Io6YTe',
+                # fallback: any button whose aria-label contains a street/number
+                'button[aria-label*=","]',
             ]:
                 try:
                     el = page.query_selector(sel)
                     if el:
-                        addr = el.inner_text().strip()
+                        # Prefer aria-label (often cleaner) then inner_text
+                        addr = (
+                            el.get_attribute("aria-label") or el.inner_text()
+                        ).strip()
+                        # Strip leading "Address:" prefix Google sometimes adds
+                        addr = re.sub(
+                            r"^(Address|address)[:\s]+", "", addr
+                        ).strip()
                         if addr and len(addr) > 5:
-                            data["address"] = addr
-                            break
+                            _addr_candidates.append(addr)
                 except Exception:
                     pass
+
+            # Also try querying ALL matching elements and pick the best
+            for sel in [
+                'button[data-item-id="address"]',
+                '[data-item-id="address"]',
+            ]:
+                try:
+                    els = page.query_selector_all(sel)
+                    for el in els:
+                        addr = (
+                            el.get_attribute("aria-label") or el.inner_text()
+                        ).strip()
+                        addr = re.sub(
+                            r"^(Address|address)[:\s]+", "", addr
+                        ).strip()
+                        if addr and len(addr) > 5:
+                            _addr_candidates.append(addr)
+                except Exception:
+                    pass
+
+            if _addr_candidates:
+                # Pick the longest candidate — usually the most complete
+                data["address"] = max(_addr_candidates, key=len)
 
             # ---- Rating -------------------------------------------------
             for sel in [
