@@ -238,6 +238,65 @@ def get_total_leads() -> int:
     return count
 
 
+def lead_exists_in_db(
+    name: str,
+    phone: str,
+    maps_link: str,
+    latitude: str,
+    longitude: str,
+) -> bool:
+    """
+    Check whether a business already exists anywhere in the database.
+
+    Checks (in order of reliability):
+    1. maps_link — most specific
+    2. coordinates — lat+lng pair
+    3. name + phone (normalised digits only)
+
+    Returns True if any match is found so the caller can skip this lead.
+    """
+    import re as _re
+
+    conn = get_connection()
+    try:
+        # 1. Maps URL match (strip query string for comparison)
+        if maps_link:
+            # Strip everything after '?' to normalise redirect variants
+            base_url = maps_link.split("?")[0].rstrip("/")
+            row = conn.execute(
+                "SELECT 1 FROM leads WHERE TRIM(maps_link,'/ ') LIKE ? LIMIT 1",
+                (f"%{base_url.split('maps/place/')[-1]}%",),
+            ).fetchone()
+            if row:
+                return True
+
+        # 2. Coordinates match (if both present)
+        if latitude and longitude:
+            row = conn.execute(
+                "SELECT 1 FROM leads WHERE latitude=? AND longitude=? LIMIT 1",
+                (latitude, longitude),
+            ).fetchone()
+            if row:
+                return True
+
+        # 3. Name + phone (digits only) match
+        if name and phone:
+            digits = _re.sub(r"\D", "", phone)
+            if len(digits) >= 7:
+                rows = conn.execute(
+                    "SELECT phone FROM leads WHERE LOWER(name)=?",
+                    (name.strip().lower(),),
+                ).fetchall()
+                for r in rows:
+                    existing_digits = _re.sub(r"\D", "", r[0] or "")
+                    if existing_digits and existing_digits == digits:
+                        return True
+
+        return False
+    finally:
+        conn.close()
+
+
 # ===========================================================================
 # DASHBOARD STATS
 # ===========================================================================

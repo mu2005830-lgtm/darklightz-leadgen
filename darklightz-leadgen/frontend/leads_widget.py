@@ -383,6 +383,11 @@ class _LeadsTablePage(QWidget):
         for row_idx, lead in enumerate(leads):
             for col_idx, (_, key, _) in enumerate(COLUMNS):
                 value = str(lead.get(key, "") or "")
+
+                # WhatsApp: if phone exists but WhatsApp link is absent → "Unknown"
+                if key == "whatsapp" and not value and lead.get("phone"):
+                    value = "Unknown"
+
                 item  = QTableWidgetItem(value)
                 item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)
 
@@ -393,6 +398,9 @@ class _LeadsTablePage(QWidget):
                     colour = STATUS_COLOURS.get(value, "#a6adc8")
                     item.setForeground(QBrush(QColor(colour)))
                     f = QFont(); f.setBold(True); item.setFont(f)
+
+                if key == "whatsapp" and value == "Unknown":
+                    item.setForeground(QBrush(QColor("#6c7086")))
 
                 self._table.setItem(row_idx, col_idx, item)
 

@@ -44,6 +44,7 @@ from utilities.helpers import (
     extract_email,
 )
 from utilities.logger import logger
+from database.operations import lead_exists_in_db
 
 
 # ---------------------------------------------------------------------------
@@ -99,8 +100,8 @@ _COOKIE_SELECTORS = [
 
 _SPINNER_SELECTOR = 'div[jsaction*="mouseover:trigger.TnYT73"]'
 
-_MAX_SCROLL_STALLS = 8      # give up scrolling after this many no-progress cycles
-_STALL_WAIT_MS     = 2000   # ms to wait when stalled before retrying
+_MAX_SCROLL_STALLS = 25     # give up scrolling after this many no-progress cycles
+_STALL_WAIT_MS     = 1500   # ms to wait when stalled before retrying
 
 
 # ---------------------------------------------------------------------------
@@ -205,7 +206,6 @@ class ScraperWorker(QThread):
                 seen_hrefs: set[str]  = set()
                 seen_keys:  set[str]  = set()
                 stall_count           = 0
-                last_count            = 0
 
                 while found < self.max_leads and not self._stop_flag:
                     # Collect visible listing links
@@ -222,12 +222,13 @@ class ScraperWorker(QThread):
                             found,
                             f"Scrolling for more results … (attempt {stall_count}/{_MAX_SCROLL_STALLS})"
                         )
-                        self._scroll_feed(page, feed, aggressive=stall_count > 3)
+                        self._scroll_feed(page, feed, aggressive=stall_count > 5)
                         page.wait_for_timeout(_STALL_WAIT_MS)
                         continue
                     else:
                         stall_count = 0
 
+                    qualified_in_batch = 0
                     for href in new_hrefs:
                         if found >= self.max_leads or self._stop_flag:
                             break
@@ -244,15 +245,27 @@ class ScraperWorker(QThread):
                             logger.debug("Skipping (has website): %s", lead.get("name"))
                             continue
 
-                        # Deduplication by name+phone+city
+                        # In-session deduplication by name+phone+city
                         dedup_key = (
                             f"{lead.get('name','').lower()}|"
-                            f"{re.sub(r'\\D','',lead.get('phone',''))}|"
+                            f"{re.sub(r'[^\\d]','',lead.get('phone',''))}|"
                             f"{self.city.lower()}"
                         )
                         if dedup_key in seen_keys:
+                            logger.debug("Skipping in-session duplicate: %s", lead.get("name"))
                             continue
                         seen_keys.add(dedup_key)
+
+                        # Cross-session deduplication — check the full database
+                        if lead_exists_in_db(
+                            lead.get("name", ""),
+                            lead.get("phone", ""),
+                            lead.get("maps_link", ""),
+                            lead.get("latitude", ""),
+                            lead.get("longitude", ""),
+                        ):
+                            logger.debug("Skipping DB duplicate: %s", lead.get("name"))
+                            continue
 
                         lead["search_id"] = self.search_id
                         lead["city"]      = self.city
@@ -260,11 +273,20 @@ class ScraperWorker(QThread):
                         lead["lead_type"] = classify_lead(website)
 
                         found += 1
+                        qualified_in_batch += 1
                         self.progress.emit(
                             found,
                             f"Found: {lead.get('name','unknown')} [{found}/{self.max_leads}]"
                         )
                         self.lead_found.emit(lead)
+
+                    # If the batch had new hrefs but none qualified, scroll
+                    # immediately without penalising the stall counter so we
+                    # keep pushing through filtered results.
+                    if qualified_in_batch == 0 and new_hrefs:
+                        self._scroll_feed(page, feed)
+                        page.wait_for_timeout(self.scroll_delay)
+                        continue
 
                     # Scroll to reveal more results
                     if found < self.max_leads and not self._stop_flag:
@@ -387,14 +409,14 @@ class ScraperWorker(QThread):
 
         try:
             page.goto(href, wait_until="domcontentloaded", timeout=20_000)
-            page.wait_for_timeout(1500)
+            page.wait_for_timeout(500)
 
             # Wait for the detail panel to settle
             try:
-                page.wait_for_selector('h1[jstag~="headline"]', timeout=8_000)
+                page.wait_for_selector('h1[jstag~="headline"]', timeout=5_000)
             except Exception:
                 try:
-                    page.wait_for_selector('h1', timeout=5_000)
+                    page.wait_for_selector('h1', timeout=3_000)
                 except Exception:
                     pass
 

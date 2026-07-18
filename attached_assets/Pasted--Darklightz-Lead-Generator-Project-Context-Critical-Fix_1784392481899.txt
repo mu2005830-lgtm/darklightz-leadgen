@@ -1,0 +1,313 @@
+# Darklightz Lead Generator — Project Context & Critical Fixes
+
+You are continuing work on an existing desktop application called **Darklightz Lead Generator**, developed by **Darklightz Studio**.
+
+This is NOT a new project.
+
+I have already built the application and attached the complete source code. Your job is to audit the existing codebase, understand how it works, fix bugs, improve the application, and preserve all existing working features.
+
+## Project Overview
+
+The application is a Windows desktop application built with Python.
+
+Main features include:
+
+- Google Maps lead generation
+- Google Maps scraping using Playwright
+- SQLite local database
+- Excel export
+- CSV export
+- PDF export
+- Professional desktop UI
+- Lead management
+- Automatic update system
+- Windows installer
+- Darklightz Studio branding
+
+The application works locally and does not use paid APIs.
+
+DO NOT rebuild the application.
+
+DO NOT remove working features.
+
+DO NOT replace the architecture.
+
+Instead, improve the existing project.
+
+---
+
+# CRITICAL BUGS TO FIX
+
+## 1. Scraper became slower
+
+The previous version was significantly faster.
+
+The new version is much slower.
+
+Find the reason and optimize:
+
+- Browser loading
+- Waiting logic
+- Page scrolling
+- Extraction
+- Database writes
+- UI responsiveness
+
+The application should perform at least as fast as the previous stable version.
+
+---
+
+## 2. Scraper stops too early
+
+This is currently the biggest issue.
+
+If I request:
+
+50 Leads
+
+the scraper finds only a few businesses (sometimes only 3) and then stops.
+
+This is incorrect.
+
+The scraper should continue until:
+
+- 50 unique qualifying leads have been collected
+
+OR
+
+- Google Maps has absolutely no more qualifying businesses available.
+
+It must never stop after only a few results.
+
+---
+
+## 3. Replace skipped businesses
+
+Whenever a business is skipped because:
+
+- it has a website
+- it is a duplicate
+- it has missing required information
+- validation fails
+
+Immediately continue searching.
+
+Skipped businesses should NEVER reduce the requested lead count.
+
+Example:
+
+Requested:
+
+50 Leads
+
+If 20 businesses are skipped,
+
+continue searching until 50 valid businesses are collected.
+
+---
+
+## 4. Duplicate Detection
+
+The application is saving duplicate businesses.
+
+This must be fixed.
+
+Before saving a business, compare against the ENTIRE database using:
+
+- Business Name
+- Phone Number
+- Google Maps URL
+- Coordinates (if available)
+
+If it already exists anywhere in the database:
+
+Skip it automatically.
+
+Continue searching for another business.
+
+Never save duplicates.
+
+---
+
+## 5. Lead Collections
+
+Redesign the Leads page.
+
+Instead of one giant mixed table,
+
+every search should create its own Lead Collection.
+
+Example:
+
+Lead Collection #1
+
+Search:
+Gym
+
+Location:
+Lahore
+
+Date:
+18 July 2026
+
+Time:
+3:20 PM
+
+Total Leads:
+50
+
+Lead Collection #2
+
+Search:
+Restaurant
+
+Location:
+Lahore
+
+Date:
+18 July 2026
+
+Time:
+6:45 PM
+
+Total Leads:
+50
+
+Clicking a Lead Collection should open only the businesses collected during that search.
+
+This will make the application much more organized.
+
+---
+
+## 6. Export
+
+When Export is clicked,
+
+DO NOT export the entire database.
+
+Instead ask:
+
+Which Lead Collection do you want to export?
+
+Example:
+
+Gym Lahore
+50 Leads
+
+Restaurant Lahore
+40 Leads
+
+Salon Islamabad
+55 Leads
+
+Export only the selected Lead Collection.
+
+---
+
+## 7. Address Collection
+
+The Google Maps link is being collected correctly.
+
+However,
+
+the written address is still missing.
+
+Improve the scraper so it extracts and stores the full address whenever Google provides it.
+
+If the address genuinely cannot be obtained,
+
+leave it blank.
+
+Never generate fake addresses.
+
+---
+
+## 8. Google Business Profile
+
+Every lead should include:
+
+- Google Maps URL
+- Full Address
+- Latitude
+- Longitude
+
+Also add:
+
+Open in Google Maps
+
+Copy Google Maps Link
+
+---
+
+## 9. Phone Numbers
+
+Never generate phone numbers.
+
+Never guess phone numbers.
+
+Use only verified public numbers.
+
+---
+
+## 10. WhatsApp
+
+Generate WhatsApp links ONLY for Pakistani mobile numbers.
+
+Never generate WhatsApp links for landlines.
+
+If WhatsApp cannot be verified,
+
+display:
+
+Unknown
+
+instead of creating fake links.
+
+---
+
+## 11. Email
+
+Collect public business email addresses whenever available.
+
+Never generate or guess emails.
+
+---
+
+## 12. Automatic Updates
+
+The application already includes an update system.
+
+I already have a GitHub repository for this project.
+
+I will provide access.
+
+Your responsibilities:
+
+- Push all completed code to the correct GitHub repository.
+- Use clear commit messages.
+- Create or update GitHub Releases.
+- Upload the latest installer (.exe) and required update files.
+- Configure the app so "Check for Updates" works correctly from GitHub Releases.
+- Preserve all user data (SQLite database, Lead Collections, notes, settings) during updates.
+
+If you cannot push because of missing permissions or credentials, stop and tell me exactly what access you need. Do not claim the code has been pushed if it has not.
+
+The GitHub repository should become the official source of truth for this project, so future updates can be distributed through GitHub Releases and the built-in updater.
+
+---
+
+# FINAL GOAL
+
+The finished application should feel like a professional commercial desktop product developed by **Darklightz Studio**.
+
+It should be:
+
+- Fast
+- Stable
+- Accurate
+- Well organized
+- Easy to update
+- Free to use
+- Production-ready
+
+Audit the existing project first, fix all identified issues, test everything thoroughly, then push the completed work to the GitHub repository and prepare it for future updates.

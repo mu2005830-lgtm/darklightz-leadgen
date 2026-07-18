@@ -31,8 +31,8 @@ from utilities.logger import logger
 # ---------------------------------------------------------------------------
 # Configuration — update this to point to the real GitHub repo
 # ---------------------------------------------------------------------------
-GITHUB_OWNER   = "mu2005830-lgtm"
-GITHUB_REPO    = "darklightz-leadgen"
+GITHUB_OWNER   = "DarklightzStudio"
+GITHUB_REPO    = "lead-generator"
 RELEASES_URL   = (
     f"https://api.github.com/repos/{GITHUB_OWNER}/{GITHUB_REPO}/releases/latest"
 )

@@ -2,6 +2,31 @@
 
 ---
 
+## v2.0.1 — 18 July 2026 (Critical Bug Fixes)
+
+### Bug Fixes
+
+**Scraper stops too early — FIXED**
+- Increased scroll stall limit from 8 to 25 attempts before giving up
+- When a batch of newly-visible listings all get filtered (has website, duplicates), the scraper now scrolls immediately and continues without penalising the stall counter
+- Scraper now reliably collects the requested number of leads instead of stopping after a few results
+
+**Duplicate detection — FIXED**
+- Added full database duplicate check (`lead_exists_in_db`) that runs before a lead is counted
+- Checks by: Google Maps URL → coordinates (lat/lng) → name + phone digits
+- Previously, cross-session duplicates were emitted as "found" but silently dropped by the DB constraint, meaning they still consumed the requested count
+- Now duplicates are detected before counting so skipped leads never reduce the target count
+
+**Scraper speed — IMPROVED**
+- Reduced per-listing page settle wait from 1,500 ms to 500 ms
+- Reduced h1 selector timeout from 8 s to 5 s (with 3 s fallback) — cuts wasted time on slow-loading panels
+- Stall wait reduced from 2,000 ms to 1,500 ms
+
+**WhatsApp display — FIXED**
+- Leads table now shows "Unknown" (greyed out) in the WhatsApp column when a phone number exists but a WhatsApp link cannot be confirmed, instead of leaving the cell blank
+
+---
+
 ## v2.0.0 — 2025 (Production Upgrade)
 
 ### New Features
