@@ -23,10 +23,11 @@ from typing import Any
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel,
     QPushButton, QTableWidget, QTableWidgetItem,
-    QHeaderView, QMenu, QAction, QMessageBox,
+    QHeaderView, QMenu, QMessageBox,
     QDialog, QTextEdit, QDialogButtonBox, QComboBox,
     QLineEdit, QSizePolicy, QAbstractItemView,
 )
+from PyQt6.QtGui import QAction
 from PyQt6.QtCore import Qt, pyqtSignal, QTimer
 from PyQt6.QtGui import QColor, QFont, QBrush
 
