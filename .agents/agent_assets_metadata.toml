@@ -6,3 +6,9 @@ id = "vJhvW_uLe19LZ560NF193"
 uri = "file://darklightz-leadgen-v2.zip"
 type = "unspecified"
 title = "Darklightz Lead Generator v2.0 — Full Redesign + Bug Fixes"
+
+[[outputs]]
+id = "yViDXJ0m4poIOCD-xVSqo"
+uri = "file://darklightz-leadgen-v2.0.1.zip"
+type = "unspecified"
+title = "darklightz-leadgen-v2.0.1.zip"
