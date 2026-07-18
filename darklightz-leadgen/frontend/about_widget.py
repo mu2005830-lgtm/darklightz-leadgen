@@ -18,7 +18,7 @@ from PyQt6.QtCore import Qt, QThread, pyqtSignal
 from utilities.updater import check_for_updates, UpdateInfo
 from utilities.logger import logger
 
-APP_VERSION = "2.0.0"
+APP_VERSION = "2.0.1"
 
 
 # ---------------------------------------------------------------------------
