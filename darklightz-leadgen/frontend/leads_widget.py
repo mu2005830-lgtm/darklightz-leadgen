@@ -112,12 +112,13 @@ class LeadsWidget(QWidget):
         self._sort_col: int = 20   # default sort: Date Added
         self._sort_asc: bool = False
 
-        self._build_ui()
-        # Debounce search input
+        # Must be created BEFORE _build_ui() because _build_ui connects to it
         self._search_timer = QTimer()
         self._search_timer.setSingleShot(True)
         self._search_timer.setInterval(300)
         self._search_timer.timeout.connect(self._apply_filters)
+
+        self._build_ui()
 
     # ------------------------------------------------------------------
     # UI construction

@@ -5,4 +5,4 @@ generated = []
 id = "vJhvW_uLe19LZ560NF193"
 uri = "file://darklightz-leadgen-v2.zip"
 type = "unspecified"
-title = "Darklightz Lead Generator v2.0 — Fixed (QAction bug patched)"
+title = "Darklightz Lead Generator v2.0 — Fixed (search_timer + QAction)"
