@@ -84,7 +84,10 @@ _FEED_SELECTORS = [
 ]
 
 _RESULT_SELECTORS = [
-    'div[role="feed"] a[href*="maps/place"]',
+    'a.hfpxzc',                                        # primary (stable 2024+)
+    'div[role="feed"] a[href*="maps/place"]',           # fallback
+    'div[role="article"] a[href*="maps/place"]',        # fallback
+    'div.Nv2PK a[href*="maps/place"]',                  # fallback
     'a[data-value="Search Results"]',
     'div.Nv2PK a',
 ]
@@ -235,7 +238,15 @@ class ScraperWorker(QThread):
 
                         seen_hrefs.add(href)
 
-                        lead = self._extract_detail(page, href)
+                        # Open each listing in a temporary page so the
+                        # main search-results page (and feed reference)
+                        # are never navigated away from.
+                        detail_page = ctx.new_page()
+                        lead = self._extract_detail(detail_page, href)
+                        try:
+                            detail_page.close()
+                        except Exception:
+                            pass
                         if lead is None:
                             continue
 
