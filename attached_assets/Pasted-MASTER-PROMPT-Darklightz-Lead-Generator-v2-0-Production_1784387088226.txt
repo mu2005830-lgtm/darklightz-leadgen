@@ -1,0 +1,260 @@
+MASTER PROMPT — Darklightz Lead Generator v2.0 (Production Upgrade)
+You are a senior Python engineer, desktop application architect, QA engineer, UI/UX designer, SQLite expert, Playwright automation engineer, and Windows packaging expert.
+I have attached the complete source code of my existing project.
+IMPORTANT:
+Do NOT rebuild the application from scratch.
+Do NOT change the existing architecture unless absolutely necessary.
+Keep every working feature.
+Audit every file first.
+Fix and improve the project professionally.
+Deliver a stable, production-ready application.
+NON-NEGOTIABLE RULES
+Use only free and open-source technologies.
+No paid APIs.
+No subscriptions.
+No premium libraries.
+No cloud dependency.
+Everything must work locally.
+If any feature cannot legally or technically be implemented under these constraints, explain why instead of faking the functionality.
+Never fabricate data (phone numbers, emails, WhatsApp, addresses, coordinates, etc.). Only use publicly available information.
+PHASE 1 — COMPLETE PROJECT AUDIT
+Audit every file.
+Check:
+Broken imports
+Broken UI
+Broken database
+Broken exports
+Broken scraper
+Placeholder code
+TODOs
+Missing files
+Dead code
+Duplicate code
+Memory leaks
+Runtime errors
+Packaging issues
+Threading issues
+Missing assets
+Automatically repair every issue.
+PHASE 2 — SCRAPER IMPROVEMENT
+Completely improve the Google Maps scraper.
+The current scraper skips many businesses and often returns incomplete data.
+Requirements:
+Better scrolling
+Better extraction
+Better retry system
+Better waiting logic
+Better pagination
+Better loading detection
+The scraper should continue searching until the requested number of qualifying businesses is collected whenever possible.
+PHASE 3 — WEBSITE FILTERING
+Current filtering is too aggressive.
+Correct behaviour:
+Skip businesses ONLY if they have their own dedicated business website.
+Do NOT skip businesses that only have:
+Instagram
+Facebook
+WhatsApp
+Google Business Profile
+These businesses are my target customers.
+If a business is skipped, continue searching until enough qualifying businesses are found.
+PHASE 4 — COMPLETE LEAD INFORMATION
+Collect every publicly available detail.
+Each lead should include, where available:
+Business Name
+Business Category
+Phone Number
+Mobile Number
+WhatsApp Number
+Email Address
+Instagram URL
+Facebook URL
+Website
+Complete Address
+Google Maps / Google Business Profile Link
+Latitude
+Longitude
+Rating
+Reviews Count
+Opening Hours
+Contact Status
+Notes
+Date Added
+If a field cannot be found, leave it blank.
+Never generate fake data.
+PHASE 5 — PHONE & WHATSAPP VALIDATION
+Never generate phone numbers.
+Detect:
+Mobile
+Landline
+Generate WhatsApp links ONLY for mobile numbers.
+Pakistani mobile numbers must automatically convert correctly.
+Example:
+03351234567
+↓
+923351234567
+↓
+https://wa.me/923351234567⁠�
+Do NOT generate WhatsApp links for landlines.
+If WhatsApp availability cannot be confirmed, display:
+Unknown
+instead of assuming it exists.
+PHASE 6 — GOOGLE BUSINESS PROFILE
+Every lead must include the direct Google Maps / Google Business Profile link whenever available.
+Provide:
+Google Maps Link
+Full Address
+Latitude
+Longitude
+Add action buttons:
+Open in Google Maps
+Copy Google Maps Link
+This allows me to review the business profile manually before contacting the owner.
+PHASE 7 — EMAIL COLLECTION
+If a business publicly displays an email address, collect it.
+Possible sources include publicly available information such as:
+Google Business Profile
+Official Facebook page
+Official Instagram bio
+Official website contact page
+Never guess or generate email addresses.
+PHASE 8 — LEAD TABLE
+Redesign the lead table.
+Display all available fields.
+No hidden information.
+Allow sorting.
+Allow filtering.
+Allow searching.
+Allow editing Notes and Status.
+PHASE 9 — LEAD COLLECTIONS (PROJECTS)
+Replace the current export workflow.
+Every search should create a permanent Lead Collection.
+Example:
+Lead Collection #1
+Gym
+Lahore
+18 July 2026
+50 Leads
+Lead Collection #2
+Restaurant
+Lahore
+50 Leads
+Lead Collection #3
+Salon
+Islamabad
+42 Leads
+Each Lead Collection should permanently store every business found during that search.
+Never overwrite previous collections.
+PHASE 10 — EXPORT
+When Export is clicked:
+Do NOT immediately export.
+Instead ask:
+Select Lead Collection
+Show:
+Collection Name
+Search Keyword
+Location
+Lead Count
+Date
+After selection,
+Export ONLY that collection.
+Supported formats:
+Excel
+CSV
+PDF
+Exports must include every collected field.
+PHASE 11 — LEAD DETAIL WINDOW
+Clicking a business should open a detailed profile containing every collected field.
+Nothing should be hidden.
+PHASE 12 — DATABASE
+Improve SQLite.
+Requirements:
+Permanent storage
+Unlimited Lead Collections
+Duplicate detection
+Automatic backup
+Fast searching
+Automatic saving
+PHASE 13 — DUPLICATE DETECTION
+Detect duplicates using:
+Business Name
+Phone
+Google Maps Link
+Coordinates
+Do not save duplicates.
+PHASE 14 — PERFORMANCE
+Improve:
+RAM usage
+CPU usage
+Scraping speed
+Scrolling
+Database writes
+UI responsiveness
+Background threading
+PHASE 15 — USER INTERFACE
+Improve the interface professionally.
+Modern dark theme.
+Responsive.
+Better spacing.
+Better typography.
+Smooth animations.
+Professional icons.
+Better tables.
+Professional dialogs.
+PHASE 16 — BRANDING
+Brand everything as:
+Darklightz Studio
+Application title:
+Darklightz Lead Generator
+Add:
+Splash Screen
+About Page
+Footer
+Installer branding
+Version number
+"Developed by Darklightz Studio"
+PHASE 17 — AUTOMATIC UPDATE SYSTEM
+I already have this application installed.
+I do NOT want to uninstall and reinstall it for every update.
+Implement a professional update system.
+Requirements:
+Versioning (v1.0.0, v1.0.1, etc.)
+In-app "Check for Updates" option.
+Automatic update detection using a free source such as GitHub Releases.
+Prompt the user when an update is available.
+Download and install updates without uninstalling the application.
+Preserve all SQLite data, settings, notes, and Lead Collections during updates.
+Provide a Windows installer and an updater mechanism.
+PHASE 18 — TESTING
+Before marking the project complete:
+Test:
+Gym Lahore
+Restaurant Lahore
+Salon Islamabad
+Verify:
+Website filtering
+Lead collection
+Phone numbers
+WhatsApp links
+Email extraction
+Google Maps links
+Addresses
+Coordinates
+Export
+Database
+UI
+Installer
+Update system
+Fix every issue found during testing.
+Repeat until no critical bugs remain.
+FINAL DELIVERABLE
+Return:
+Complete updated source code.
+Fully tested Windows installer (.exe).
+Automatic update system.
+Version number.
+Changelog.
+Build instructions.
+Documentation.
+The application must feel like a polished commercial desktop product.
+It should be stable, fast, reliable, and suitable for daily business use as the official Darklightz Lead Generator developed by Darklightz Studio.
